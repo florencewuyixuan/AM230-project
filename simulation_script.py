@@ -45,10 +45,10 @@ for t in range(Nsteps):
 
     dump.dump_json(filename)
     
-    mask = compute_mask(filename)
-    field = diffractio.propagate(mask)
-    velocity = convertTovVelocity(field)
+    mask = compute_mask(filename) # Dima
+    field = diffractio.propagate(mask) # Dima
+    velocity = convertTovVelocity(field) # Dima
 
-    update_json(filename, velocity)
+    update_json(filename, velocity) # Florence
 
 
