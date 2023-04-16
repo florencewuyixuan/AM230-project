@@ -93,32 +93,86 @@ if 1:
                 particles_x.append(x)
                 particles_y.append(y)
 
-        num_data = 2**8
+        num_data = 2**9
         length = 60 * um
         x = np.linspace(-length / 2, length / 2, num_data)
         y = np.linspace(-length / 2, length / 2, num_data)
         wavelength = 0.6328 * um
+        # wavelength = 1.55 * um
 
         
 
         # pdb.set_trace()
+        N_particles = 100
 
+        # generate scalar mask based on particle positions
         t_total = Scalar_mask_XY(x, y, wavelength)
-        for ii in range(0,len(particles_x[0:100])-1):
+        #  container to save individual particle masks
+        t_list = []
+        for ii in range(0,len(particles_x[0:N_particles])-1):
             t1 = Scalar_mask_XY(x, y, wavelength)
-            t1.circle(r0=(particles_x[ii] * um, particles_y[ii] * um), radius=2*um)
+            t1.circle(r0=(particles_x[ii] * um, particles_y[ii] * um), radius=1*um)
             # t1.draw(kind='intensity')
+            t_list.append(t1)
 
             t_total = t_total.add(t1,'maximum1')
         
-        plt.figure()
+        t_total.u = np.abs(1-t_total.u)
+        # plt.figure()
         t_total.draw(title = 'Particle mask')
+        plt.scatter(particles_x[0:N_particles-1],particles_y[0:N_particles-1])
         plt.show()
 
-        field = t_total.RS(z = 0.1 * mm,new_field=True)
-        plt.figure()
+        # compute the field distribution after propagating a set distance using Rayleigh-Sommerfeld model
+        u0 = Scalar_source_XY(x=x,y=y,wavelength=wavelength)
+        u0.plane_wave(A=1)
+        field = (t_total * u0).RS(z = 100 * um,new_field=True)
+        
         field.draw()
+        cbar = plt.colorbar()
+        plt.scatter(particles_x[0:N_particles-1],particles_y[0:N_particles-1])
         plt.show()
+        # pdb.set_trace()
+
+        
+            
+
+        # compute force from intensity gradients
+        intensity = np.square(np.abs(field.u))
+        # force_x = np.gradient(intensity)[0]
+        # force_y = np.gradient(intensity)[1]
+        # pdb.set_trace()
+
+        v_update = []
+        for p in t_list:
+            # integrate intensity within a circle for each particle
+            v = np.multiply(intensity,p.u).sum() 
+            v_update.append(v)
+        
+        # pdb.set_trace()
+
+        # X, Y = np.mgrid[0:len(x),0:len(y)]/len(x)*length - length/2
+
+        # fig, (ax0, ax1, ax2) = plt.subplots(1, 3)
+        # ax0.pcolor(X, Y, intensity,cmap=plt.cm.gist_heat)
+        # ax1.pcolor(X, Y, force_x,cmap=plt.cm.bone)
+        # ax2.pcolor(X, Y, force_y,cmap=plt.cm.bone)
+
+        # plt.show()
+
+        # plt.figure()
+        # plt.imshow(x,y,intensity)
+        # ax = plt.gca()
+        # ax.invert_yaxis()
+        # plt.show()
+
+        # plt.figure()
+        # plt.subplot(1,2,1)
+        # plt.imshow(x,y,force_x)
+        # plt.subplot(1,2,2)
+        # plt.imshow(x,y,force_y)
+        # plt.show()
+
 
     filename = 'test.json'
     compute_mask(filename)
@@ -139,6 +193,6 @@ if 0:
 
     t3 = t2 + t1
 
-    plt.figure()
+    # plt.figure()
     draw_several_fields([t1, t2, t3], titles=['1', '2', '1+2'])
     plt.show()
