@@ -103,7 +103,7 @@ if 1:
         
 
         # pdb.set_trace()
-        N_particles = 100
+        N_particles = 200
 
         # generate scalar mask based on particle positions
         t_total = Scalar_mask_XY(x, y, wavelength)
@@ -125,10 +125,11 @@ if 1:
 
         # compute the field distribution after propagating a set distance using Rayleigh-Sommerfeld model
         u0 = Scalar_source_XY(x=x,y=y,wavelength=wavelength)
-        u0.plane_wave(A=1)
+        u0.gauss_beam([0,0],[100*um,100*um],[0,0])
+        # u0.plane_wave(A=1)
         field = (t_total * u0).RS(z = 100 * um,new_field=True)
         
-        field.draw()
+        field.draw(title = 'Field intensity')
         cbar = plt.colorbar()
         plt.scatter(particles_x[0:N_particles-1],particles_y[0:N_particles-1])
         plt.show()
@@ -173,9 +174,14 @@ if 1:
         # plt.imshow(x,y,force_y)
         # plt.show()
 
+        # return array of intensities ordered by particle number
+
+        return v_update
 
     filename = 'test.json'
-    compute_mask(filename)
+    v_update = compute_mask(filename)
+    pdb.set_trace()
+    print()
 
 # diffractio tutorial adding masks
 if 0:
