@@ -3,7 +3,7 @@
 DEV_LAUNCHABLE
 void SelfPropulsionForce_kernel(const int Numparticles,
                                 ParticleType *particles,
-                                const std::vector<double> alpha)
+                                const std::vector<real> alpha)
 {
     for (int pindex_i = blockIdx.x * blockDim.x + threadIdx.x;
          pindex_i < Numparticles;
