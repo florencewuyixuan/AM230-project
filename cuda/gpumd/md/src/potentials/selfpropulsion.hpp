@@ -44,11 +44,11 @@ public:
 
     void set_default_properties(void) override
     {
-        alpha = 1.0;
+        // alpha = 1.0;
         rcut = 0.0; //cut off radius to be use in neighbourslist
     }
 
-    void set_property(const std::string &prop_name, const double &value) override
+    void set_property(const std::string &prop_name, std::vector<real> value) 
     {
         if (prop_name.compare("alpha") == 0)
             alpha = value;
@@ -60,7 +60,7 @@ public:
 
 private:
     NeighbourListType &_neighbourslist;
-    real alpha;
+    std::vector<real> alpha;
 };
 
 #endif
