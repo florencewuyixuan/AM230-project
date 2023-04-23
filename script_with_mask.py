@@ -20,6 +20,7 @@ a = 1.0
 random_init(phi, L, rcut=a, outfile='testing.json')  
 
 
+# TODO: loop starts here
 
 s = System(rcut = 3.0, pad = 0.5)   # Create a system object with neighbour list cutoff rcut = 3.0 and padding distance 0.5
 s.read_init('init.json')            # Read in the initial configuration
@@ -48,6 +49,9 @@ e.add_integrator(rot_integ)
 
 # evolve once with dt, dt = 1 now
 e.evolve(1)
+
+# TODO: dump the particles as a json file after each iteration
+# d.dump_json(outfile)
 
 
 # compute mask
