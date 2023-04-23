@@ -50,7 +50,7 @@ public:
     void update_neighbourlist(void);
 
     //potentials and torques
-    void add_force(const std::string &, std::map<std::string, real> & );
+    void add_force(const std::string &, std::map<std::string, std::vector<real>> & );
     void add_torque(const std::string &, std::map<std::string, real> & );
 
     //compute potentials

@@ -58,11 +58,11 @@ void EvolverClass::update_neighbourlist(void)
 }
 
 //potentials and torques
-void EvolverClass::add_force(const std::string &name, std::map<std::string, real> &parameters)
+void EvolverClass::add_force(const std::string &name, std::map<std::string, std::vector<real>> &parameters)
 {
     if (name.compare("Harmonic Force") == 0)
     {
-        //add the force to the list
+        //add the force to the list 
         force_list[name] = std::make_unique<HarmonicForce>(_system, *neighbourlist.get());
         //loop over the parameters and set them up
         for (auto param : parameters)

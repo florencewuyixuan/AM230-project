@@ -10,6 +10,7 @@ void SelfPropulsionForce_kernel(const int Numparticles,
          pindex_i += blockDim.x * gridDim.x)  
     {
         ParticleType pi = particles[pindex_i];
+        std::cout<<alpha[pindex_i]
         pi.forceC.x+=alpha[pindex_i]*pi.n.x;
         pi.forceC.y+=alpha[pindex_i]*pi.n.y;
         //put back the particle in the list

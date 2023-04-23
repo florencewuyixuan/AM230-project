@@ -1,5 +1,5 @@
 # %matplotlib widget
-# import gpumd as md
+import cuda.gpumd as md
 import time
 import json
 
@@ -104,7 +104,7 @@ def compute_mask(filename):
 Nsteps = 1000
 if 0:
     for t in range(Nsteps):
-        json_reader = md.fast_read_json("initphi=0.4L=150.json") #here we read the json file in C++
+        json_reader = md.fast_read_json("test_particle.json") #here we read the json file in C++
         system = md.System(json_reader.particles, json_reader.box)
 
         # #get the GPU hardware properties
@@ -125,8 +125,9 @@ if 0:
         # Create pairwise repulsive interactions with the spring contant k = 10 and range a = 1.0
         evolver.add_force("Harmonic Force", {"k": 10.0, "a": 1.0})
 
+        alpha = np.array([1, 2, 3])
         # Create self-propulsion, self-propulsion strength alpha = 10.0
-        evolver.add_force("Self Propulsion", {"alpha": 10.0})
+        evolver.add_force("Self Propulsion", {"alpha": alpha})
 
         # Create pairwise polar alignment with alignment strength J = 10.0 and range a = 1.0
         evolver.add_torque("Polar Align", {"k": 10.0, "a": 1.0})
@@ -147,7 +148,6 @@ if 0:
         intensity_update = compute_mask(filename) # Dima
         
 
-        update_json(filename, velocity) # Florence
 
 if 0:
     

@@ -50,13 +50,13 @@ public:
         rcut = a; //cut off radius to be use in neighbourslist
     }
 
-    void set_property(const std::string &prop_name, const double &value) override
+    void set_property(const std::string &prop_name, const std::vector<real> &value) override
     {
         if (prop_name.compare("k")==0)
-            k = value;
+            k = value[0];
         else if (prop_name.compare("a")==0)
         {
-            a = value;
+            a = value[0];
             a2 = a*a;
             rcut = a; //cut off radius to be use in neighbourslist
         }
