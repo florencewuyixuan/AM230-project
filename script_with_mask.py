@@ -58,5 +58,5 @@ for i in range(1, N+1):
     # dump the particles as a json file after each iteration
     d.dump_json('testing_' + str(i) + '.json')
 
-    ## TODO: we may want to 
+    ## TODO: we may want to dump to vtk for plot after some iterations
 
