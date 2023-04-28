@@ -1,4 +1,6 @@
 import numpy as np
+from Python.pymd.builder import *
+from Python.pymd.md import *               # Import the md module from the pymd package
 from diffractio import sp, nm, plt, np, mm, degrees, um
 from diffractio.scalar_fields_XY import Scalar_field_XY
 from diffractio.scalar_sources_XY import Scalar_source_XY
