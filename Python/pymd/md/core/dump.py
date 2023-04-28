@@ -32,7 +32,7 @@ class Dump:
         sys : System
           Simulated system
     """
-    self.sys = sys
+    self.system = sys
 
   def dump_data(self, outfile):
     """
