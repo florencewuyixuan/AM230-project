@@ -49,7 +49,7 @@ def compute_mask(filename):
         t_total = Scalar_mask_XY(x, y, wavelength)
         #  container to save individual particle masks
         t_list = []
-        for ii in range(0,len(particles_x)-1):
+        for ii in range(0,len(particles_x)):
             t1 = Scalar_mask_XY(x, y, wavelength)
             t1.circle(r0=(particles_x[ii] * um, particles_y[ii] * um), radius=1*um)
             # t1.draw(kind='intensity')
