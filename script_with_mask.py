@@ -16,12 +16,12 @@ import pdb
 
 # initializing
 phi = 0.4
-L = 10
+L = 35
 a = 1.0
 random_init(phi, L, rcut=a, outfile='testing_0.json')  
 
 # number of iteration
-N = 100
+N = 1000
 
 # TODO: loop starts here
 for i in range(1, N+1):
@@ -57,6 +57,6 @@ for i in range(1, N+1):
 
     # dump the particles as a json file after each iteration
     d.dump_json('testing_' + str(i) + '.json')
-
+    d.dump_vtp('test_{:05d}.vtp'.format(i))
     ## TODO: we may want to dump to vtk for plot after some iterations
 
