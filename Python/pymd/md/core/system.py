@@ -23,6 +23,7 @@ from .neighbour_list import NeighbourList
 from random import uniform
 from math import pi, sin, cos
 import json
+import numpy as np
 
 class System:
   """This class stores and handles simulated particles."""
@@ -36,6 +37,7 @@ class System:
         Neighbour list padding distance
     """
     self.particles = []
+    self.positions = []
     self.rcut = rcut 
     self.pad = pad
     
@@ -58,9 +60,11 @@ class System:
           raise Exception('Input JSON file has to include system box section.')
         if 'particles' in data['system']:
           self.particles = []
+          self.positions
           for p in data['system']['particles']:
             idx = p['id']
             x, y = p['r']
+            self.positions.append(p['r'])
             theta = uniform(-pi,pi)
             nx, ny = cos(theta), sin(theta)
             vx, vy = 0.0, 0.0
@@ -69,6 +73,7 @@ class System:
             if 'v' in p:  vx, vy = p['v']
             if 'f' in p:  fx, fy = p['f']
             self.particles.append(Partice(idx, Vec(x,y), v = Vec(vx, vy), n = Vec(nx,ny), f = Vec(fx, fy)))
+            # self.positions.append([x,y])
           self.N = len(self.particles)  
           self.neighbour_list = NeighbourList(self, self.rcut, self.pad) 
           self.neighbour_list.build()       
@@ -76,6 +81,9 @@ class System:
           raise Exception('Input JSON file has to include particles section.')    
     except IOError:
       print('Could not open {:s} for reading.'.format(initfile))
+
+    positions = np.array(self.positions)
+    return positions
 
   def apply_periodic(self):
     """
