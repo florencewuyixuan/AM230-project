@@ -20,10 +20,15 @@ L = 10
 a = 1.0
 init_pos = random_init(phi, L, rcut=a, outfile='testing_0.json')  
 num_particle = L * L * phi
-msd = np.zeros(int(num_particle))
 
 # number of iteration light off
 N = 100
+# light on 
+M = 200
+
+msd_mat = np.zeros((M, int(num_particle))) ## might be M-1
+msd = np.zeros(int(num_particle))
+
 
 # TODO: lights on and lights off
 
@@ -34,6 +39,7 @@ for i in range(1, N+1):
     # print(len(pos[0]))
     # calculate msd
     msd += np.square(pos[:,0]- init_pos[:,0]) + np.square(pos[:,1]- init_pos[:,1])
+    msd_mat[i-1] = msd/num_particle
 
     e = Evolver(s)                      # Create a system evolver object
     d = Dump(s)                         # Create a dump object
@@ -66,10 +72,6 @@ for i in range(1, N+1):
     ## TODO: we may want to dump to vtk for plot after some iterations
     # d.dump_vtp('test_{:05d}.vtp'.format(i))
 
-# light on 
-
-M = 200
-
 for j in range(N+1, M):
 
     s = System(rcut = 3.0, pad = 0.5)   # Create a system object with neighbour list cutoff rcut = 3.0 and padding distance 0.5
@@ -77,7 +79,12 @@ for j in range(N+1, M):
 
     # calculate msd
     msd += np.square(pos[:,0]- init_pos[:,0]) + np.square(pos[:,1]- init_pos[:,1])
+    msd_mat[j-1] = msd/num_particle
 
+    # compute displacement 
+    if j==M:
+        displacement =  np.sqrt(np.square(pos[:,0]- init_pos[:,0]) + np.square(pos[:,1]- init_pos[:,1]))
+        
     e = Evolver(s)                      # Create a system evolver object
     d = Dump(s)                         # Create a dump object
 
@@ -107,5 +114,12 @@ for j in range(N+1, M):
     d.dump_json('testing_' + str(j) + '.json')
 
 
-msd= msd/num_particle
+msd_mat = np.transpose(msd_mat)
+
+## plot MSD
+for k in range(M):
+    plt.plot(msd_mat[k])
+
+plt.title("Mean Square Displacement")
+plt.show() 
 
