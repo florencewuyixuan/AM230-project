@@ -1,12 +1,12 @@
 from Python.pymd.builder import *
 from Python.pymd.md import *               # Import the md module from the pymd package
 import numpy as np
-# from diffractio import sp, nm, plt, np, mm, degrees, um
-# from diffractio.scalar_fields_XY import Scalar_field_XY
-# from diffractio.scalar_sources_XY import Scalar_source_XY
-# from diffractio.scalar_masks_XY import Scalar_mask_XY
-# from diffractio.utils_drawing import draw_several_fields
-# from compute_mask import *
+from diffractio import sp, nm, plt, np, mm, degrees, um
+from diffractio.scalar_fields_XY import Scalar_field_XY
+from diffractio.scalar_sources_XY import Scalar_source_XY
+from diffractio.scalar_masks_XY import Scalar_mask_XY
+from diffractio.utils_drawing import draw_several_fields
+from compute_mask import *
 
 from random import uniform
 from math import pi, sin, cos
@@ -70,7 +70,7 @@ for i in range(1, N+1):
 
 M = 200
 
-for j in range(N+2, M):
+for j in range(N+1, M):
 
     s = System(rcut = 3.0, pad = 0.5)   # Create a system object with neighbour list cutoff rcut = 3.0 and padding distance 0.5
     pos = s.read_init('testing_' + str(j-1) + '.json')            # Read in the initial configuration
