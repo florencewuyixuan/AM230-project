@@ -19,6 +19,7 @@
 from math import sin, cos, sqrt, pi
 from random import uniform
 import json
+import numpy as np
 
 def random_init(phi, Lx, Ly = None, rcut = None, outfile = 'test.json', max_attempts = 10):
   """
@@ -40,6 +41,7 @@ def random_init(phi, Lx, Ly = None, rcut = None, outfile = 'test.json', max_atte
       max_attempts : int
         Maximum number of attempts to place each particle
   """
+  positions = []
   particles = []  # Store all particles in a list 
   lx = Lx 
   ly = Ly if Ly != None else Lx
@@ -75,6 +77,7 @@ def random_init(phi, Lx, Ly = None, rcut = None, outfile = 'test.json', max_atte
           f = [0.0, 0.0]
           # Add a particle at position x,y with the director pointing in the random direction
           particles.append({'id': i, 'r': r, 'n': n, 'v': v, 'f': f})
+          positions.append(r)
           i += 1
           break 
         else:
@@ -85,5 +88,8 @@ def random_init(phi, Lx, Ly = None, rcut = None, outfile = 'test.json', max_atte
   jsonData["system"]["particles"] = particles
   with open(outfile, 'w') as out:
     json.dump(jsonData, out, indent = 4)
+
+  positions = np.array(positions)
+  return positions
 
 
