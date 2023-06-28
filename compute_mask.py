@@ -7,6 +7,12 @@ from diffractio.scalar_sources_XY import Scalar_source_XY
 from diffractio.scalar_masks_XY import Scalar_mask_XY
 from diffractio.utils_drawing import draw_several_fields
 
+import os
+import pdb
+
+from scipy.io import savemat
+
+
 def compute_mask(filename):
         with open(filename) as f:
             data = json.load(f)
@@ -92,3 +98,39 @@ def compute_mask(filename):
         
 
         return v_update
+
+
+
+def json_to_mat(filename):
+     with open(filename) as f:
+            data = json.load(f)
+            print(filename)
+            if 'box' in data['system']:
+                Lx = data["system"]["box"]["Lx"]
+                Ly = data["system"]["box"]["Ly"]
+                #   self.box = Box(Lx, Ly)
+            else:
+                raise Exception('Input JSON file has to include system box section.')
+            if 'particles' in data['system']:
+                particles_x = []
+                particles_y = []
+
+            for p in data['system']['particles']:
+                idx = p['id']
+                x, y = p['r']
+                # theta = uniform(-pi,pi)
+                # nx, ny = cos(theta), sin(theta)
+                # vx, vy = 0.0, 0.0
+                # fx, fy = 0.0, 0.0
+                # if 'n' in p:  nx, ny = p['n']
+                # if 'v' in p:  vx, vy = p['v']
+                # if 'f' in p:  fx, fy = p['f']
+                particles_x.append(x)
+                particles_y.append(y)
+
+            mdic = {"x": particles_x,
+                    "y": particles_y}
+            # pdb.set_trace()
+            os.path.split(filename)
+            savemat(os.path.splitext(filename)[0]+'.mat',mdic)
+
