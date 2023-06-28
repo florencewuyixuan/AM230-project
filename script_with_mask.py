@@ -16,7 +16,7 @@ import pdb
 
 # initializing
 phi = 0.4
-L = 10
+L = 25
 a = 1.0
 init_pos = random_init(phi, L, rcut=a, outfile='testing_0.json')  
 num_particle = L * L * phi
